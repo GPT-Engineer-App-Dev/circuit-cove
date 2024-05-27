@@ -1,15 +1,23 @@
-import { Box, Container, VStack, Text, Heading, Image, Button, SimpleGrid, Link, Flex, Spacer, HStack, Input, InputGroup, InputRightElement, IconButton } from "@chakra-ui/react";
+import { Box, Container, VStack, Text, Heading, Image, Button, SimpleGrid, Link, Flex, Spacer, HStack, Input, InputGroup, InputRightElement, IconButton, Select, Slider, SliderTrack, SliderFilledTrack, SliderThumb } from "@chakra-ui/react";
 import { FaFacebook, FaTwitter, FaInstagram, FaSearch } from "react-icons/fa";
 import { Link as RouterLink } from "react-router-dom";
 import { useState } from "react";
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
+const [category, setCategory] = useState("");
+const [priceRange, setPriceRange] = useState([0, 1000]);
+const [rating, setRating] = useState(0);
 
   const handleSearch = () => {
     // Implement the search functionality here
     console.log("Searching for:", searchQuery);
-  };
+};
+
+const handleFilter = () => {
+    // Implement the filtering functionality here
+    console.log("Filtering products with:", { category, priceRange, rating });
+};
 
   return (
     <Box>
@@ -51,6 +59,44 @@ const Index = () => {
           <Heading mb={4}>Welcome to ElectroShop</Heading>
           <Text mb={6}>Your one-stop shop for the latest electronics</Text>
           <Button colorScheme="blue" size="lg">Shop Now</Button>
+        </Container>
+      </Box>
+
+      {/* Filter Products */}
+      <Box py={10}>
+        <Container maxW="container.lg">
+          <Heading mb={6} textAlign="center">Filter Products</Heading>
+          <SimpleGrid columns={[1, 2, 3]} spacing={10} mb={6}>
+            <Box>
+              <Text mb={2}>Category</Text>
+              <Select placeholder="Select category" value={category} onChange={(e) => setCategory(e.target.value)}>
+                <option value="electronics">Electronics</option>
+                <option value="fashion">Fashion</option>
+                <option value="home">Home</option>
+              </Select>
+            </Box>
+            <Box>
+              <Text mb={2}>Price Range</Text>
+              <Slider aria-label="price-range" defaultValue={1000} min={0} max={1000} step={50} onChangeEnd={(val) => setPriceRange([0, val])}>
+                <SliderTrack>
+                  <SliderFilledTrack />
+                </SliderTrack>
+                <SliderThumb />
+              </Slider>
+              <Text mt={2}>Up to ${priceRange[1]}</Text>
+            </Box>
+            <Box>
+              <Text mb={2}>Rating</Text>
+              <Select placeholder="Select rating" value={rating} onChange={(e) => setRating(e.target.value)}>
+                <option value="1">1 Star & Up</option>
+                <option value="2">2 Stars & Up</option>
+                <option value="3">3 Stars & Up</option>
+                <option value="4">4 Stars & Up</option>
+                <option value="5">5 Stars</option>
+              </Select>
+            </Box>
+          </SimpleGrid>
+          <Button colorScheme="blue" onClick={handleFilter}>Apply Filters</Button>
         </Container>
       </Box>
 
